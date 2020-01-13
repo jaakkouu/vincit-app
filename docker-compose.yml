@@ -1,0 +1,20 @@
+version: "3"
+services:
+  server:
+    container_name: vincit-server 
+    build:
+        context: ./server
+    volumes:
+      - ./server:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - '3000:3000' 
+  client:
+    container_name: vincit-client
+    build:
+      context: ./client
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    ports:
+      - '8080:8080'
