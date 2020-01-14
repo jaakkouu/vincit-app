@@ -10,7 +10,8 @@
   "dependencies": {
     "core-js": "^3.4.4",
     "socket.io-client": "^2.3.0",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-toasted": "^1.1.27"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",

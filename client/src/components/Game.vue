@@ -25,8 +25,11 @@
             this.socket.on('update points', data => {
                 this.points = data;
             })
-            this.socket.on("client count", data => {
+            this.socket.on('client count', data => {
                 this.clientCount = data;
+            })
+            this.socket.on('notify reward', data => {
+                this.$toasted.show('You just won ' + data + ' points!')
             })
         },
         mounted() {
