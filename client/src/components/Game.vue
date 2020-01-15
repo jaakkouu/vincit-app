@@ -4,39 +4,46 @@
         <div class="game">
             <h1>{{ points }}</h1>
             <p>points</p>
-            <button v-on:click="play()">Play</button>
+            <Button :state="state" />
         </div>
     </div>
 </template>
 <script>
     import io from 'socket.io-client';
+    import Button from './Button.vue';
     export default {
         name: 'Game',
+        components: {
+            Button
+        },
         data() {
             return {
                 socket: {},
-                context: {},
                 points: 0,
+                state: false, // true means waiting for update points
                 clientCount: 0
             }
         },
         created() {
             this.socket = io('http://localhost:3000');
             this.socket.on('update points', data => {
+                this.state = true;
                 this.points = data;
             })
             this.socket.on('client count', data => {
                 this.clientCount = data;
             })
             this.socket.on('notify reward', data => {
-                this.$toasted.show('You just won ' + data + ' points!')
+                this.$toasted.show(`Congratulations! You just won ${data} points`, { 
+                    theme: "outline", 
+                    position: "top-center",
+                    duration: 4000
+                })
             })
-        },
-        mounted() {
-            this.context = this.$refs.game;
         },
         methods: {
             play() {
+                this.state = false;
                 this.socket.emit('play', this.points);
             }
         }
@@ -68,17 +75,5 @@
         top: -29px;
         letter-spacing: 6px;
         font-size: 23px
-    }
-    button {
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 14px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 15px
     }
 </style>

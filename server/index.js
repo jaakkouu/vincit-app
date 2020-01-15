@@ -25,15 +25,12 @@ function checkForPrice() {
     switch(true) {
         case counter % 10 == 0 && counter >= 10:
             price = 5;
-            console.log("You won 5 points");
         break;
         case counter % 100 == 0 && counter >= 100:
             price = 40;
-            console.log("You won 40 points");
         break;
         case counter % 500 == 0 && counter >= 500:
             price = 250;
-            console.log("You won 250 points");
         break;
     }
     return price;
