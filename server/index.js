@@ -7,31 +7,33 @@ var counter = 0;
 io.on('connection', socket => {
     io.emit('client count', io.engine.clientsCount);
     socket.emit('update points', 20);
+
     // Functions
     socket.on('play', (points) => {
         points--; // remove 1 point
-        let extraPoints = checkForPrice();
+        let extraPoints = counter > 0 ? checkForPrice() : false;
         if(extraPoints){
             socket.emit('notify reward', extraPoints);
             points += extraPoints;
-        }   
+        }
         socket.emit('update points', points);
         counter++;
     });
 });
 
+
+function isWholeNumber(x) {
+    return x % 1 == 0;
+}
+
 function checkForPrice() {
     let price = false;
-    switch(true) {
-        case counter % 10 == 0 && counter >= 10:
-            price = 5;
-        break;
-        case counter % 100 == 0 && counter >= 100:
-            price = 40;
-        break;
-        case counter % 500 == 0 && counter >= 500:
-            price = 250;
-        break;
+    if(isWholeNumber(counter / 500)) {
+        price = 250;
+    } else if (isWholeNumber(counter / 100)) {
+        price = 40;
+    } else if (isWholeNumber(counter / 10)) {
+        price = 5;
     }
     return price;
 }
